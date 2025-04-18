@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 
 const Contactform = () => {
-  // useState hook to handle form data and errors
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -11,7 +10,7 @@ const Contactform = () => {
     message: "",
     queryType: "",
     showAlert: false,
-    errors: { // To track validation errors
+    errors: {
       firstName: false,
       lastName: false,
       email: false,
@@ -20,44 +19,40 @@ const Contactform = () => {
     },
   });
 
-  // handleChange function to update formData on input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target; // Destructuring name and value from input fields
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value, // Update the corresponding field in the state
-      errors: { ...prev.errors, [name]: false }, // Reset the error for that field
+      [name]: value,
+      errors: { ...prev.errors, [name]: false },
     }));
   };
 
-  // handleSubmit function to handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent page reload on form submit
+    e.preventDefault();
 
-    // Validation checks for each field
     const errors = {
       firstName: formData.firstName.trim() === "",
       lastName: formData.lastName.trim() === "",
-      email: !/\S+@\S+\.\S+/.test(formData.email), // Regex to validate email format
+      email: !/\S+@\S+\.\S+/.test(formData.email),
       message: formData.message.trim() === "",
       queryType: formData.queryType === "",
     };
 
     setFormData((prev) => ({
       ...prev,
-      errors, // Set the validation errors in the state
+      errors,
     }));
 
-    // Check if there are any errors
     if (!Object.values(errors).includes(true)) {
       setFormData((prev) => ({
         ...prev,
-        showAlert: true, // Show success message if no errors
+        showAlert: true,
       }));
       setTimeout(
-        () => setFormData((prev) => ({ ...prev, showAlert: false })), // Hide the alert after 3 seconds
+        () => setFormData((prev) => ({ ...prev, showAlert: false })),
         3000
       );
     }
@@ -77,7 +72,7 @@ const Contactform = () => {
       >
         <h1 className="font-bold text-[28px] sm:text-[32px]">Contact Us</h1>
 
-        <div className="flex md:flex-row flex-col gap-4 mt-5">
+        <div className="flex flex-col md:flex-row gap-4 mt-5">
           <div className="flex-1 relative">
             <p>
               FirstName <span className="text-green-800">*</span>
@@ -145,7 +140,7 @@ const Contactform = () => {
           <p>
             Query Type <span className="text-green-800">*</span>
           </p>
-          <div className="flex md:flex-row flex-col gap-4 mt-2">
+          <div className="flex flex-col md:flex-row gap-4 mt-2">
             <label className="flex-1 cursor-pointer">
               <input
                 type="radio"
@@ -197,7 +192,7 @@ const Contactform = () => {
           )}
         </div>
 
-        <div className="mt-5">
+        <div className="mt-10">
           <button
             type="submit"
             className="bg-green-600 text-white w-full h-12 rounded-md hover:bg-green-700 transition"
