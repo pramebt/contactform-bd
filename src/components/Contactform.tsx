@@ -1,63 +1,65 @@
 'use client'; 
 
 import React, { useState } from "react";
-import Querytype from "./Querytype";
 
 const Contactform = () => {
+  // useState hook to handle form data and errors
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     message: "",
-    queryType: "", // เพิ่ม queryType
+    queryType: "",
     showAlert: false,
-    errors: {
+    errors: { // To track validation errors
       firstName: false,
       lastName: false,
       email: false,
       message: false,
-      queryType: false, // เพิ่ม error สำหรับ queryType
+      queryType: false,
     },
   });
 
+  // handleChange function to update formData on input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Destructuring name and value from input fields
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
-      errors: { ...prev.errors, [name]: false },
+      [name]: value, // Update the corresponding field in the state
+      errors: { ...prev.errors, [name]: false }, // Reset the error for that field
     }));
   };
 
+  // handleSubmit function to handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent page reload on form submit
 
-    // ตรวจสอบ error ทุกฟิลด์
+    // Validation checks for each field
     const errors = {
       firstName: formData.firstName.trim() === "",
       lastName: formData.lastName.trim() === "",
-      email: !/\S+@\S+\.\S+/.test(formData.email), // เช็คว่าอีเมลเป็นไปตามรูปแบบหรือไม่
+      email: !/\S+@\S+\.\S+/.test(formData.email), // Regex to validate email format
       message: formData.message.trim() === "",
-      queryType: formData.queryType === "", // ตรวจสอบว่า queryType ถูกเลือกหรือไม่
+      queryType: formData.queryType === "",
     };
 
     setFormData((prev) => ({
       ...prev,
-      errors,
+      errors, // Set the validation errors in the state
     }));
 
+    // Check if there are any errors
     if (!Object.values(errors).includes(true)) {
       setFormData((prev) => ({
         ...prev,
-        showAlert: true,
+        showAlert: true, // Show success message if no errors
       }));
       setTimeout(
-        () => setFormData((prev) => ({ ...prev, showAlert: false })),
+        () => setFormData((prev) => ({ ...prev, showAlert: false })), // Hide the alert after 3 seconds
         3000
       );
-      // ส่งข้อมูลได้ที่นี่
     }
   };
 
@@ -118,7 +120,6 @@ const Contactform = () => {
           </div>
         </div>
 
-        {/* แก้ไขส่วน EmailInput */}
         <div className="mt-10 relative">
           <p>
             Email <span className="text-green-800">*</span>
@@ -145,7 +146,6 @@ const Contactform = () => {
             Query Type <span className="text-green-800">*</span>
           </p>
           <div className="flex md:flex-row flex-col gap-4 mt-2">
-            {/* General */}
             <label className="flex-1 cursor-pointer">
               <input
                 type="radio"
@@ -159,7 +159,6 @@ const Contactform = () => {
               </div>
             </label>
 
-            {/* Technical */}
             <label className="flex-1 cursor-pointer">
               <input
                 type="radio"
